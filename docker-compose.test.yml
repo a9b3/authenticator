@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo
+
+  redis:
+    image: redis
+
+  app_test:
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/auth_server
+      - REDIS_HOST=redis
+    depends_on:
+      - mongo
+      - redis
