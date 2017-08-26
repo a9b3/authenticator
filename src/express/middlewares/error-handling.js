@@ -11,14 +11,14 @@ import config from 'config'
  * // apply other stuff to express app
  * app.use(lastErrorHandler)
  */
-export default function lastErrorHandler(err, req, res) {
+export default function lastErrorHandler(err, req, res, next) { // eslint-disable-line
   if (config.APP_ENV !== 'test') {
     logger.error(err.stack)
   }
 
   return res.status(500).json({
     message: err.message,
-    status: 500,
-    stack: err.stack,
+    status : 500,
+    stack  : err.stack,
   })
 }
