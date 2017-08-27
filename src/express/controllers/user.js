@@ -7,13 +7,13 @@ export async function authenticate(req, res) {
 }
 
 export async function register(req, res) {
-  const result = await userService.register(req.body)
-  res.send(result)
+  await userService.register(req.body)
+  res.send(true)
 }
 
 export async function facebookRegister(req, res) {
-  const result = await facebookOauth.register(req.body)
-  res.send(result)
+  await facebookOauth.register(req.body)
+  res.send(true)
 }
 
 export async function facebookAuthenticate(req, res) {

@@ -18,6 +18,7 @@ const TOKEN_EXPIRE_SEC  = TOKEN_EXPIRE_MIN * 60
  *
  * @param {!string} email
  * @param {!string} password
+ * @returns {object}
  */
 export async function register({
   email,
@@ -32,14 +33,12 @@ export async function register({
     throw new Error(`User already exists.`)
   }
 
-  await (new userModel({
+  return await (new userModel({
     email,
     password: encryptPassword(password),
     id      : uuid.v4(),
     facebook,
   })).save()
-
-  return true
 }
 
 /**
