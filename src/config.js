@@ -1,3 +1,4 @@
+require('dotenv').config()
 import { envOverride } from 'js-functions'
 const APP_ENV = process.env.APP_ENV || 'development'
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -13,6 +14,8 @@ config.development = {
   MONGO_URI       : 'mongodb://localhost:27017/auth_server',
   REDIS_HOST      : 'localhost',
   REDIS_PORT      : 6379,
+  FB_APP_ID       : process.env.FB_APP_ID,
+  FB_APP_SECRET   : process.env.FB_APP_SECRET,
 }
 
 config.test = {
@@ -24,6 +27,8 @@ config.test = {
   MONGO_URI       : 'mongodb://localhost:27017/auth_server_test',
   REDIS_HOST      : 'localhost',
   REDIS_PORT      : 6379,
+  FB_APP_ID       : process.env.FB_APP_ID,
+  FB_APP_SECRET   : process.env.FB_APP_SECRET,
 }
 
 config.staging = {
@@ -35,6 +40,8 @@ config.staging = {
   MONGO_URI       : 'mongodb://localhost:27017/auth_server',
   REDIS_HOST      : 'localhost',
   REDIS_PORT      : 6379,
+  FB_APP_ID       : process.env.FB_APP_ID,
+  FB_APP_SECRET   : process.env.FB_APP_SECRET,
 }
 
 config.production = {
@@ -46,6 +53,8 @@ config.production = {
   MONGO_URI       : 'mongodb://localhost:27017/auth_server',
   REDIS_HOST      : 'localhost',
   REDIS_PORT      : 6379,
+  FB_APP_ID       : process.env.FB_APP_ID,
+  FB_APP_SECRET   : process.env.FB_APP_SECRET,
 }
 
 export default envOverride(Object.assign({}, config[APP_ENV]))

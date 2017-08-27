@@ -1,11 +1,11 @@
-import expect                  from 'expect'
-import * as userService        from 'services/user'
-import userModel               from 'mongoose/user'
-import * as mongooseTestHelper from 'mongoose/testHelper'
+import expect           from 'expect'
+import * as userService from 'services/user'
+import userModel        from 'mongoose/user'
+import * as testHelper  from 'helpers/testHelper'
 
 describe('services/user', () => {
-  beforeEach(mongooseTestHelper.setup)
-  afterEach(mongooseTestHelper.teardown)
+  beforeEach(testHelper.setup)
+  afterEach(testHelper.teardown)
 
   describe('register', () => {
     it('error if email already exists', async () => {

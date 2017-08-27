@@ -1,11 +1,11 @@
-import mongoose    from 'mongoose'
-import redisClient from 'redis/client'
+import mongoose   from 'mongoose'
+import * as redis from 'redis/client'
 
 export async function healthcheck(req, res) {
   if (!mongoose.connection.readyState) {
     throw new Error('Mongo not connected.')
   }
-  if (!redisClient) {
+  if (!redis.getClient()) {
     throw new Error('Redis not connected.')
   }
   res.send({ok: true})

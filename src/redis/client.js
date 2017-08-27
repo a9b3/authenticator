@@ -13,12 +13,31 @@
 import redis    from 'redis'
 import bluebird from 'bluebird'
 
-import config   from 'config'
-
 bluebird.promisifyAll(redis.RedisClient.prototype)
 bluebird.promisifyAll(redis.Multi.prototype)
 
-export default redis.createClient({
-  host: config.REDIS_HOST,
-  port: config.REDIS_PORT,
-})
+// Reference to redis client.
+let client
+
+export function init({host, port}) {
+  return new Promise((resolve, reject) => {
+    if (client) {
+      resolve()
+    }
+
+    client = redis.createClient({
+      host,
+      port,
+    })
+
+    client.once('ready', resolve)
+    client.once('error', (err) => {
+      client = null
+      reject(err)
+    })
+  })
+}
+
+export function getClient() {
+  return client
+}

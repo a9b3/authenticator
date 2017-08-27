@@ -4,7 +4,7 @@ import jsonwebtoken from 'jsonwebtoken'
 import invariant    from 'invariant'
 
 import userModel    from 'mongoose/user'
-import redisClient  from 'redis/client'
+import * as redis   from 'redis/client'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1
@@ -68,7 +68,7 @@ export async function authenticate({
     id : found.id,
     ttl: TOKEN_EXPIRE_SEC,
   })
-  await redisClient.setexAsync(jwt, TOKEN_EXPIRE_SEC, 'true')
+  await redis.getClient().setexAsync(jwt, TOKEN_EXPIRE_SEC, 'true')
   return jwt
 }
 
@@ -78,6 +78,7 @@ export async function registerOauth({
   // make call against oauth server get access token
   // use access token to get email password
   // register
+  axios.get(`https://graph.facebook.com/v2.10/oauth/access_token?`)
 }
 
 /**
@@ -91,7 +92,7 @@ export async function verify({
 }) {
   invariant(jwt, `'jwt' must be provided.`)
 
-  const found = await redisClient.getAsync(jwt)
+  const found = await redis.getClient().getAsync(jwt)
   return Boolean(found)
 }
 

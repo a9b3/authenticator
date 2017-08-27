@@ -3,7 +3,7 @@ import cors                       from 'cors'
 
 import config                     from 'config'
 import index                      from 'express/controllers/index'
-import {asyncWrap}                from 'helpers/try-catch-middleware'
+import {asyncWrap}                from 'helpers/tryCatchMiddleware'
 import * as userController        from 'express/controllers/user'
 import * as healthcheckController from 'express/controllers/healthcheck'
 
