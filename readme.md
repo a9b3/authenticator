@@ -43,3 +43,25 @@ Registers a user given code from facebook login.
 #### POST `/v1/facebookAuthenticate`
 
 Authenticates a user given code from facebook login, returns a jwt.
+
+## Development
+
+#### Test
+
+```
+yarn run test
+```
+
+#### Test docker build
+
+Builds docker image and runs tests from the built image.
+
+```
+make test.build
+```
+
+#### Lint
+
+```
+yarn run lint
+```
