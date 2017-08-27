@@ -26,31 +26,11 @@
  * @param {Function} middleware - express middleware
  * @returns {Function} wrapped middleware
  */
-export function tryCatchMiddleware(middleware) {
+export function asyncWrap(middleware) {
   return (req, res, next) => {
     const promise = middleware(req, res, next)
     if (promise.catch) {
       promise.catch(e => next(e))
     }
   }
-}
-export function asyncWrap(...args) {
-  return tryCatchMiddleware(...args)
-}
-
-/**
- * Decorator for an async express middleware
- */
-export function tryCatch(target, key, descriptor) {
-  const fn = descriptor.value
-  const newFn = async(req, res, next) => {
-    try {
-      await fn.call(target, req, res, next)
-    } catch (e) {
-      next(e)
-    }
-  }
-
-  descriptor.value = newFn
-  return descriptor
 }
