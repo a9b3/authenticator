@@ -21,10 +21,10 @@
  * errors thrown in them
  *
  * async function foo() {}
- * export default tryCatchMiddleware(foo)
+ * export default asyncWrap(foo)
  *
- * @param {Function} middleware - express middleware
- * @returns {Function} wrapped middleware
+ * @param {function} middleware - express middleware
+ * @returns {function} wrapped middleware
  */
 export function asyncWrap(middleware) {
   return (req, res, next) => {
