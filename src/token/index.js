@@ -1,4 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken'
+import * as redis   from 'redis/client'
 
 const APP_SECRET = 'secret'
 

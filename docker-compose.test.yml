@@ -10,10 +10,12 @@ services:
   app_test:
     build:
       context: ./
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
     environment:
       - MONGO_URI=mongodb://mongo:27017/auth_server
       - REDIS_HOST=redis
     depends_on:
       - mongo
       - redis
+    command:
+      yarn run test
