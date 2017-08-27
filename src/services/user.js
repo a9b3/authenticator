@@ -1,10 +1,10 @@
 import bcrypt       from 'bcryptjs'
 import uuid         from 'uuid'
-import jsonwebtoken from 'jsonwebtoken'
 import invariant    from 'invariant'
 
 import userModel    from 'mongoose/user'
 import * as redis   from 'redis/client'
+import * as token   from 'token'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1
@@ -12,18 +12,17 @@ const TOKEN_EXPIRE_DAY  = TOKEN_EXPIRE_WEEK * 7
 const TOKEN_EXPIRE_HOUR = TOKEN_EXPIRE_DAY * 24
 const TOKEN_EXPIRE_MIN  = TOKEN_EXPIRE_HOUR * 60
 const TOKEN_EXPIRE_SEC  = TOKEN_EXPIRE_MIN * 60
-const APP_SECRET = 'secret'
 
 /**
  * register will check if user exists, create user if not.
  *
  * @param {!string} email
  * @param {!string} password
- * @returns {object}
  */
 export async function register({
   email,
   password,
+  facebook,
 }) {
   invariant(email, `'email' must be provided.`)
   invariant(password, `'password' must be provided.`)
@@ -33,11 +32,14 @@ export async function register({
     throw new Error(`User already exists.`)
   }
 
-  return await (new userModel({
+  await (new userModel({
     email,
     password: encryptPassword(password),
     id      : uuid.v4(),
+    facebook,
   })).save()
+
+  return true
 }
 
 /**
@@ -63,13 +65,11 @@ export async function authenticate({
     throw new Error(`Invalid password.`)
   }
 
-  const jwt = createJWT({
+  return await token.create({
     email,
     id : found.id,
     ttl: TOKEN_EXPIRE_SEC,
   })
-  await redis.getClient().setexAsync(jwt, TOKEN_EXPIRE_SEC, 'true')
-  return jwt
 }
 
 /**
@@ -88,7 +88,7 @@ export async function verify({
 }
 
 /**
- * Changes password for the given id.
+ * Changes password to newPassword for the given id.
  *
  * @param {!string} id
  * @param {!string} oldPassword
@@ -126,22 +126,4 @@ function encryptPassword(password) {
 
 function validatePassword(password, hash) {
   return bcrypt.compareSync(password, hash)
-}
-
-function createJWT({
-  email,
-  id,
-  ttl,
-}) {
-  return jsonwebtoken.sign(
-    {
-      email,
-      id,
-      ttl,
-    },
-    APP_SECRET,
-    {
-      expiresIn: ttl,
-    },
-  )
 }

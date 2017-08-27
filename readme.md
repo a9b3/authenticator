@@ -35,3 +35,11 @@ Authenticates a user given email and password, returns a jwt.
 #### POST `/v1/verify`
 
 Verifies a jwt.
+
+#### POST `/v1/facebookRegister`
+
+Registers a user given code from facebook login.
+
+#### POST `/v1/facebookAuthenticate`
+
+Authenticates a user given code from facebook login, returns a jwt.
