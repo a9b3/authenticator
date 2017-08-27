@@ -14,6 +14,9 @@ export const schema = new mongoose.Schema({
     type    : String,
     required: true,
   },
+  facebook: {
+
+  },
 }, {
   timestamps: true,
 })

@@ -12,7 +12,6 @@ describe('services/user', () => {
       await(new userModel({
         email   : 'foo@example.com',
         password: '123',
-        verified: false,
         id      : '1',
       })).save()
 
@@ -93,6 +92,43 @@ describe('services/user', () => {
 
       const result = await userService.verify({jwt})
       expect(result).toBe(true)
+    })
+  })
+
+  describe('changePassword', () => {
+    it('oldPassword should match old password', async () => {
+      const createdUser = await userService.register({
+        email   : 'foo@example.com',
+        password: '123',
+      })
+
+      let error
+      try {
+        await userService.changePassword({
+          id         : createdUser.id,
+          oldPassword: '1234',
+          newPassword: '1234',
+        })
+      } catch (err) {
+        error = err
+      }
+      expect(error).toExist()
+    })
+
+    it('should work', async () => {
+      const createdUser = await userService.register({
+        email   : 'foo@example.com',
+        password: '123',
+      })
+
+      await userService.changePassword({
+        id         : createdUser.id,
+        oldPassword: '123',
+        newPassword: '1234',
+      })
+
+      const updatedUser = userModel.findOne({id: createdUser.id})
+      expect(updatedUser.password).toNotEqual(createdUser.password)
     })
   })
 })

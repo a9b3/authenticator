@@ -72,15 +72,6 @@ export async function authenticate({
   return jwt
 }
 
-export async function registerOauth({
-  code,
-}) {
-  // make call against oauth server get access token
-  // use access token to get email password
-  // register
-  axios.get(`https://graph.facebook.com/v2.10/oauth/access_token?`)
-}
-
 /**
  * Checks given jwt against redis.
  *
@@ -94,6 +85,39 @@ export async function verify({
 
   const found = await redis.getClient().getAsync(jwt)
   return Boolean(found)
+}
+
+/**
+ * Changes password for the given id.
+ *
+ * @param {!string} id
+ * @param {!string} oldPassword
+ * @param {!string} newPassword
+ */
+export async function changePassword({
+  id,
+  oldPassword,
+  newPassword,
+}) {
+  invariant(id, `'id' must be provided.`)
+  invariant(oldPassword, `'oldPassword' must be provided.`)
+  invariant(newPassword, `'newPassword' must be provided.`)
+
+  const found = await userModel.findOne({id})
+  if (!found) {
+    throw new Error(`Cannot find user.`)
+  }
+  if (!validatePassword(oldPassword, found.password)) {
+    throw new Error(`Invalid password.`)
+  }
+
+  await userModel.update({id}, {
+    $set: {
+      password: encryptPassword(newPassword),
+    },
+  })
+
+  return true
 }
 
 function encryptPassword(password) {
