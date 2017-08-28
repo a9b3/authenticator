@@ -1,4 +1,10 @@
-.PHONY: test.build
+DOCKER_ROOT 			:= esayemm
+APP_NAME          := auth-server
+DOCKER_REPO       := $(DOCKER_ROOT)/$(APP_NAME)
+VERSION           ?= $(shell git rev-parse --short HEAD)
+export
+
+.PHONY: test.build docker.push
 
 test.build:
 	docker-compose -f docker-compose.test.yml -p auth-server-test build
@@ -10,3 +16,8 @@ test.build:
 		exit 1; \
 	fi
 	docker-compose -f docker-compose.test.yml -p auth-server-test rm -f
+
+docker.push:
+	docker build -t $(SERVICE_NAME) .
+	docker tag -f $(SERVICE_NAME) $(DOCKER_REPO):$(VERSION)
+	docker push $(DOCKER_REPO)
