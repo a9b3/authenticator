@@ -6,7 +6,7 @@ import uuid             from 'uuid'
 import config           from 'config'
 import * as userService from 'services/user'
 import * as token       from 'token'
-import * as userModel   from 'mongoose/user'
+import userModel        from 'mongoose/user'
 
 export async function register({code, redirectUri}) {
   const {email, id} = await exchangeCode({code, redirectUri})
@@ -14,11 +14,15 @@ export async function register({code, redirectUri}) {
 }
 
 export async function authenticate({code, redirectUri}) {
-  const {email, expiresIn} = await exchangeCode({code, redirectUri})
+  const {email, expiresIn, id} = await exchangeCode({code, redirectUri})
 
-  const found = userModel.findOne({email})
+  let found = await userModel.findOne({email})
   if (!found) {
-    throw new Error('User not found for given email.')
+    found = await userService.register({
+      email,
+      password: uuid.v4(),
+      facebook: {id},
+    })
   }
 
   return await token.create({

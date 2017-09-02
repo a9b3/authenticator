@@ -13,7 +13,7 @@ import config from 'config'
  */
 export default function lastErrorHandler(err, req, res, next) { // eslint-disable-line
   if (config.APP_ENV !== 'test') {
-    logger.error(err.message)
+    logger.error(err)
   }
 
   return res.status(500).json({

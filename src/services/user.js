@@ -87,6 +87,18 @@ export async function verify({
 }
 
 /**
+ * Invalidate will remove given jwt from datastore.
+ *
+ * @param {!string} jwt
+ */
+export async function invalidate({
+  jwt,
+}) {
+  if (!jwt) return
+  await redis.getClient().delAsync(jwt)
+}
+
+/**
  * Changes password to newPassword for the given id.
  *
  * @param {!string} id

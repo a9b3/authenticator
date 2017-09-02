@@ -1,7 +1,6 @@
 import express          from 'express'
 import bodyParser       from 'body-parser'
 import helmet           from 'helmet'
-import morgan           from 'morgan'
 
 import config           from 'config'
 import lastErrorHandler from 'express/middlewares/errorHandling'
@@ -19,7 +18,6 @@ class Server {
   _bootstrap = () => {
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({ extended: false }))
-    this.app.use(morgan(`[morgan] :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"`))
 
     // only add these middlewares in prod
     if (config.APP_ENV === 'production') {

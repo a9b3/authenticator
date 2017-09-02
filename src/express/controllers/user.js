@@ -1,4 +1,4 @@
-import userService        from 'services/user'
+import * as userService   from 'services/user'
 import * as facebookOauth from 'oauth/facebook'
 
 export async function authenticate(req, res) {
@@ -23,5 +23,10 @@ export async function facebookAuthenticate(req, res) {
 
 export async function verify(req, res) {
   const result = await userService.verify(req.body)
+  res.send(result)
+}
+
+export async function invalidate(req, res) {
+  const result = await userService.invalidate(req.body)
   res.send(result)
 }

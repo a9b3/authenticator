@@ -18,11 +18,12 @@ router.use(cors({
 
 router.get(`/`, asyncWrap(index))
 
-router.post('/authenticate', asyncWrap(userController.authenticate))
-router.post('/verify', asyncWrap(userController.verify))
-router.post('/register', asyncWrap(userController.register))
-router.post('/facebookRegister', asyncWrap(userController.facebookRegister))
-router.post('/facebookAuthenticate', asyncWrap(userController.facebookAuthenticate))
+router.post('/api/authenticate', asyncWrap(userController.authenticate))
+router.post('/api/verify', asyncWrap(userController.verify))
+router.post('/api/register', asyncWrap(userController.register))
+router.post('/api/invalidate', asyncWrap(userController.invalidate))
+router.post('/api/facebookRegister', asyncWrap(userController.facebookRegister))
+router.post('/api/facebookAuthenticate', asyncWrap(userController.facebookAuthenticate))
 
 router.get('/healthCheck', asyncWrap(healthcheckController.healthcheck))
 
