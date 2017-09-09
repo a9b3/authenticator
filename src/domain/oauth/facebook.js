@@ -14,15 +14,11 @@ export async function register({code, redirectUri}) {
 }
 
 export async function authenticate({code, redirectUri}) {
-  const {email, expiresIn, id} = await exchangeCode({code, redirectUri})
+  const {email, expiresIn} = await exchangeCode({code, redirectUri})
 
-  let found = await userModel.findOne({email})
+  const found = await userModel.findOne({email})
   if (!found) {
-    found = await userService.register({
-      email,
-      password: uuid.v4(),
-      facebook: {id},
-    })
+    throw new Error(`${email} does not exist.`)
   }
 
   return await token.create({
@@ -32,6 +28,9 @@ export async function authenticate({code, redirectUri}) {
   })
 }
 
+/**
+ * Get access token via request to graph.facebook.
+ */
 async function exchangeCode({code, redirectUri}) {
   invariant(code, `'code' must be provided.`)
   invariant(redirectUri, `'redirectUri' must be provided.`)

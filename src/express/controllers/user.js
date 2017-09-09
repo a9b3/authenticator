@@ -19,9 +19,7 @@ export async function authenticate(req, res) {
 }
 
 export async function register(req, res) {
-  console.log(reqHelper.extractIp(req), reqHelper.extractUserAgent(req))
-
-  // await userService.register(req.body)
+  await userService.register(req.body)
   res.send(true)
 }
 
