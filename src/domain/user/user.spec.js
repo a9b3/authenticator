@@ -1,9 +1,9 @@
 import expect           from 'expect'
-import * as userService from 'services/user'
+import * as userService from 'domain/user'
 import userModel        from 'mongoose/user'
 import * as testHelper  from 'helpers/testHelper'
 
-describe('services/user', () => {
+describe('domain/user', () => {
   beforeEach(testHelper.setup)
   afterEach(testHelper.teardown)
 
@@ -73,25 +73,6 @@ describe('services/user', () => {
       await userService.register(testcase)
       const jwt = await userService.authenticate(testcase)
       expect(jwt).toExist()
-    })
-  })
-
-  describe('verify', () => {
-    it('should be false if jwt is invalid', async () => {
-      const result = await userService.verify({jwt: 'invalid_token'})
-      expect(result).toBe(false)
-    })
-
-    it('should be true if jwt is valid', async () => {
-      const testcase = {
-        email   : 'foo@example.com',
-        password: '123',
-      }
-      await userService.register(testcase)
-      const jwt = await userService.authenticate(testcase)
-
-      const result = await userService.verify({jwt})
-      expect(result).toBe(true)
     })
   })
 

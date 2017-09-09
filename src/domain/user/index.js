@@ -3,8 +3,7 @@ import uuid         from 'uuid'
 import invariant    from 'invariant'
 
 import userModel    from 'mongoose/user'
-import * as redis   from 'redis/client'
-import * as token   from 'token'
+import * as token   from 'domain/token'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1
@@ -69,33 +68,6 @@ export async function authenticate({
     id : found.id,
     ttl: TOKEN_EXPIRE_SEC,
   })
-}
-
-/**
- * Checks given jwt against redis.
- *
- * @param {!string} jwt
- * @returns {bool}
- */
-export async function verify({
-  jwt,
-}) {
-  invariant(jwt, `'jwt' must be provided.`)
-
-  const found = await redis.getClient().getAsync(jwt)
-  return Boolean(found)
-}
-
-/**
- * Invalidate will remove given jwt from datastore.
- *
- * @param {!string} jwt
- */
-export async function invalidate({
-  jwt,
-}) {
-  if (!jwt) return
-  await redis.getClient().delAsync(jwt)
 }
 
 /**

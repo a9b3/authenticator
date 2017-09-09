@@ -4,8 +4,8 @@ import qs               from 'qs'
 import uuid             from 'uuid'
 
 import config           from 'config'
-import * as userService from 'services/user'
-import * as token       from 'token'
+import * as userService from 'domain/user'
+import * as token       from 'domain/token'
 import userModel        from 'mongoose/user'
 
 export async function register({code, redirectUri}) {
