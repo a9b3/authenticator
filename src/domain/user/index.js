@@ -51,6 +51,8 @@ export async function register({
 export async function authenticate({
   email,
   password,
+  ip,
+  userAgent,
 }) {
   invariant(email, `'email' must be provided.`)
   invariant(password, `'password' must be provided.`)
@@ -64,6 +66,8 @@ export async function authenticate({
   }
 
   return await token.create({
+    ip,
+    userAgent,
     email,
     id : found.id,
     ttl: TOKEN_EXPIRE_SEC,

@@ -13,7 +13,12 @@ export async function register({code, redirectUri}) {
   return userService.register({email, password: uuid.v4(), facebook: {id}})
 }
 
-export async function authenticate({code, redirectUri}) {
+export async function authenticate({
+  code,
+  redirectUri,
+  ip,
+  userAgent,
+}) {
   const {email, expiresIn} = await exchangeCode({code, redirectUri})
 
   const found = await userModel.findOne({email})
@@ -22,6 +27,8 @@ export async function authenticate({code, redirectUri}) {
   }
 
   return await token.create({
+    ip,
+    userAgent,
     email,
     id : found.id,
     ttl: expiresIn,

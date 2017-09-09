@@ -1,3 +1,4 @@
+import config             from 'config'
 import * as userService   from 'domain/user'
 import * as tokenService  from 'domain/token'
 import * as facebookOauth from 'domain/oauth/facebook'
@@ -14,8 +15,17 @@ const reqHelper = {
 
 
 export async function authenticate(req, res) {
-  const result = await userService.authenticate(req.body)
-  res.send(result)
+  const jwt = await userService.authenticate({
+    ...req.body,
+    ip       : reqHelper.extractIp(req),
+    userAgent: reqHelper.extractUserAgent(req),
+  })
+
+  if (config.ALLOW_SINGLE_DEVICE) {
+    await invalidateAllOtherTokens({jwt})
+  }
+
+  res.send(jwt)
 }
 
 export async function register(req, res) {
@@ -29,8 +39,17 @@ export async function facebookRegister(req, res) {
 }
 
 export async function facebookAuthenticate(req, res) {
-  const result = await facebookOauth.authenticate(req.body)
-  res.send(result)
+  const jwt = await facebookOauth.authenticate({
+    ...req.body,
+    ip       : reqHelper.extractIp(req),
+    userAgent: reqHelper.extractUserAgent(req),
+  })
+
+  if (config.ALLOW_SINGLE_DEVICE) {
+    await invalidateAllOtherTokens({jwt})
+  }
+
+  res.send(jwt)
 }
 
 export async function verify(req, res) {
