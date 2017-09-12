@@ -11,14 +11,20 @@ import config from 'config'
  * // apply other stuff to express app
  * app.use(lastErrorHandler)
  */
-export default function lastErrorHandler(err, req, res, next) { // eslint-disable-line
+export default function lastErrorHandler(
+  err,
+  req,
+  res,
+  next, // eslint-disable-line
+) {
   if (config.APP_ENV !== 'test') {
-    logger.error(err)
+    logger.error(err.stack)
   }
 
-  return res.status(500).json({
-    message: err.message,
-    status : 500,
-    stack  : err.stack,
-  })
+  // Do not show stack trace to production users.
+  if (config.APP_ENV === 'production') {
+    delete err.stack
+  }
+
+  return res.status(err.status || 500).json(Object.assign({}, err, {message: err.message}))
 }

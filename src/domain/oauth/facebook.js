@@ -6,6 +6,7 @@ import uuid             from 'uuid'
 import config           from 'config'
 import * as userService from 'domain/user'
 import * as token       from 'domain/token'
+import * as errors      from 'domain/errors'
 import userModel        from 'mongoose/user'
 
 export async function register({code, redirectUri}) {
@@ -23,7 +24,7 @@ export async function authenticate({
 
   const found = await userModel.findOne({email})
   if (!found) {
-    throw new Error(`${email} does not exist.`)
+    throw new errors.GenericError(`${email} does not exist.`)
   }
 
   return await token.create({

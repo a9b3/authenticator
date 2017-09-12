@@ -22,7 +22,7 @@ export async function authenticate(req, res) {
   })
 
   if (config.ALLOW_SINGLE_DEVICE) {
-    await invalidateAllOtherTokens({jwt})
+    await tokenService.invalidateAllOtherTokens({jwt})
   }
 
   res.send(jwt)
@@ -46,7 +46,7 @@ export async function facebookAuthenticate(req, res) {
   })
 
   if (config.ALLOW_SINGLE_DEVICE) {
-    await invalidateAllOtherTokens({jwt})
+    await tokenService.invalidateAllOtherTokens({jwt})
   }
 
   res.send(jwt)

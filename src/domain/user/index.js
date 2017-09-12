@@ -1,9 +1,10 @@
-import bcrypt       from 'bcryptjs'
-import uuid         from 'uuid'
-import invariant    from 'invariant'
+import bcrypt     from 'bcryptjs'
+import uuid       from 'uuid'
+import invariant  from 'invariant'
 
-import userModel    from 'mongoose/user'
-import * as token   from 'domain/token'
+import errors     from 'domain/errors'
+import userModel  from 'mongoose/user'
+import * as token from 'domain/token'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1
@@ -29,7 +30,7 @@ export async function register({
 
   const found = await userModel.findOne({email})
   if (found) {
-    throw new Error(`User already exists.`)
+    throw errors.GenericError(`User already exists.`)
   }
 
   return await (new userModel({
@@ -59,10 +60,10 @@ export async function authenticate({
 
   const found = await userModel.findOne({email})
   if (!found) {
-    throw new Error(`${email} does not exist.`)
+    throw errors.GenericError(`${email} does not exist.`)
   }
   if (!validatePassword(password, found.password)) {
-    throw new Error(`Invalid password.`)
+    throw errors.GenericError(`Invalid password.`)
   }
 
   return await token.create({
