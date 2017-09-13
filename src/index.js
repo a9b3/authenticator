@@ -2,7 +2,7 @@ const logger = require('logger').createLogger(__filename)
 import { excludeFields } from 'js-functions'
 import config            from 'config'
 import server            from 'express/server'
-import mongooseDb        from 'mongoose/db'
+import mongooseDb        from 'db'
 import * as redis        from 'redis/client'
 import pkg               from '../package.json'
 

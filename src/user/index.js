@@ -2,9 +2,9 @@ import bcrypt     from 'bcryptjs'
 import uuid       from 'uuid'
 import invariant  from 'invariant'
 
-import errors     from 'domain/errors'
-import userModel  from 'mongoose/user'
-import * as token from 'domain/token'
+import errors     from 'errors'
+import userModel  from 'db/models/user'
+import * as token from 'token'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1

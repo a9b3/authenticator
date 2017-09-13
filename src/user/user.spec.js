@@ -1,9 +1,9 @@
 import expect           from 'expect'
-import * as userService from 'domain/user'
-import userModel        from 'mongoose/user'
+import * as userService from 'user'
+import userModel        from 'db/models/user'
 import * as testHelper  from 'helpers/testHelper'
 
-describe('domain/user', () => {
+describe('user', () => {
   beforeEach(testHelper.setup)
   afterEach(testHelper.teardown)
 

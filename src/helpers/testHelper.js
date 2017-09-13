@@ -1,4 +1,4 @@
-import mongooseDb       from 'mongoose/db'
+import mongooseDb       from 'db'
 import * as redisClient from 'redis/client'
 import config           from 'config'
 

@@ -4,10 +4,10 @@ import qs               from 'qs'
 import uuid             from 'uuid'
 
 import config           from 'config'
-import * as userService from 'domain/user'
-import * as token       from 'domain/token'
-import * as errors      from 'domain/errors'
-import userModel        from 'mongoose/user'
+import * as userService from 'user'
+import * as token       from 'token'
+import * as errors      from 'errors'
+import userModel        from 'db/models/user'
 
 export async function register({code, redirectUri}) {
   const {email, id} = await exchangeCode({code, redirectUri})

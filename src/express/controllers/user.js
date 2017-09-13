@@ -1,7 +1,7 @@
 import config             from 'config'
-import * as userService   from 'domain/user'
-import * as tokenService  from 'domain/token'
-import * as facebookOauth from 'domain/oauth/facebook'
+import * as userService   from 'user'
+import * as tokenService  from 'token'
+import * as facebookOauth from 'oauth/facebook'
 
 const reqHelper = {
   extractIp: (req) => {

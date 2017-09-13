@@ -1,6 +1,6 @@
 import mongoose    from 'mongoose'
 import * as redis  from 'redis/client'
-import * as errors from 'domain/errors'
+import * as errors from 'errors'
 
 export async function healthcheck(req, res) {
   if (!mongoose.connection.readyState) {

@@ -1,9 +1,9 @@
 import expect            from 'expect'
-import * as tokenService from 'domain/token'
-import * as userService  from 'domain/user'
+import * as tokenService from 'token'
+import * as userService  from 'user'
 import * as testHelper   from 'helpers/testHelper'
 
-describe('domain/token', () => {
+describe('token', () => {
   beforeEach(testHelper.setup)
   afterEach(testHelper.teardown)
 
