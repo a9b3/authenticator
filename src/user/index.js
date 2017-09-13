@@ -1,10 +1,10 @@
-import bcrypt     from 'bcryptjs'
-import uuid       from 'uuid'
-import invariant  from 'invariant'
+import bcrypt      from 'bcryptjs'
+import uuid        from 'uuid'
+import invariant   from 'invariant'
 
-import errors     from 'errors'
-import userModel  from 'db/models/user'
-import * as token from 'token'
+import * as errors from 'errors'
+import * as token  from 'token'
+import userModel   from 'db/models/user'
 
 // TODO might want to move these to config
 const TOKEN_EXPIRE_WEEK = 1
